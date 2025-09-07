@@ -1,7 +1,8 @@
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QHBoxLayout, QVBoxLayout,
-    QPushButton, QTextEdit, QDialog, QMessageBox
+    QPushButton, QTextEdit, QDialog, QMessageBox, QLabel
 )
 
 from CNNModel import CNNModel
@@ -21,7 +22,9 @@ class Interface(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.model = Model()
         self.setWindowTitle("ResNet Trainer")
+        self.setWindowIcon(QIcon(self.model.resource_path("figures/figNN")))
 
         # Layout principal (horizontal), responsável por separar a área que vai mostrar o log de treinamento
         # da seção responsável por conter as funções do programa e configurações da rede
@@ -72,7 +75,6 @@ class Interface(QWidget):
         self.image_generator_split = None
         self.train_data = None
         self.val_data = None
-        self.model = Model()
 
         # ----------------------------------------------
 
@@ -86,6 +88,24 @@ class Interface(QWidget):
         # Atributos referentes ao treinamento da rede
         self.trainer_thread = None
         self.fileName_weights = None
+
+        # ----------------------------------------------
+
+        # Inserção de label para inserir a logo da UFU
+        self.logo_label = QLabel()
+        pixmap = QPixmap(self.model.resource_path("figures/fig_ufu.png"))
+        pixmap = pixmap.scaled(150, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.logo_label.setPixmap(pixmap)
+        self.logo_label.setAlignment(Qt.AlignCenter)  # Centraliza a imagem
+        self.logo_label.setContentsMargins(0, 30, 0, 0)  # Padding para espaçar a exibição da imagem
+        button_layout.addWidget(self.logo_label)
+
+        # Inserção de label para definir a versão do software
+        # Seguindo o padrão de Versionamento Semântico
+        # MAJOR.MINOR.PATCH-SUFIX
+        self.version_label = QLabel("Ver. 1.0.0-beta", self)
+        self.version_label.setAlignment(Qt.AlignCenter)
+        button_layout.addWidget(self.version_label)
 
 # ----------------------------------------------------------------------------------------------------------------------
 

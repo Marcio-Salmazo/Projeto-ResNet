@@ -1,9 +1,16 @@
 import os
+import sys
 import tkinter as tk
 from tkinter import filedialog
 from tensorflow.keras.preprocessing.image import  ImageDataGenerator
 
 class Model:
+
+    @staticmethod
+    def resource_path(relative_path):
+        """ Retorna o caminho absoluto para o arquivo, compatível com PyInstaller """
+        base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+        return os.path.join(base_path, relative_path)
 
     @staticmethod
     def open_directory():
